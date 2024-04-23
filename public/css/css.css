@@ -1,0 +1,40 @@
+ul{
+    list-style: none; 
+    color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    padding-top: 50px;
+    margin-left: -10px;
+
+}
+li{
+    margin: 0;
+    padding: 15px 20px ;
+    width: 250px;
+}
+.navbar{
+    margin: 0 auto;
+}
+li:hover{
+    background-color: blue;
+    border-radius: 10px;
+}
+.nut_btn{
+    box-shadow: 0 4px 10px rgba(184, 28, 28, 0.1);
+    background: linear-gradient(to right, red,blue);
+    color: white;
+    font-weight: bold;
+    margin-left: 90px;
+    margin-top: 47px;
+    padding: 10px 60px;
+    border: none;
+    border-radius: 20px;
+}
+.linkgoc{
+    margin: 0;
+    color: rgb(64, 41, 197);
+    display: inline-block; /* Đảm bảo thẻ <a> là một phần của luồng block */
+    max-width: 300px; /* Đặt chiều rộng tối đa của thẻ <a> */
+    white-space: nowrap; /* Ngăn chữ xuống dòng */
+    overflow: hidden; /* Ẩn nội dung vượt quá chiều rộng */
+    text-overflow: ellipsis; /* Hiển thị dấu ... cho nội dung ẩn */
+}

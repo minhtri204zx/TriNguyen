@@ -1,0 +1,79 @@
+header{
+    background: linear-gradient(to right, rgb(143, 23, 223), rgb(34, 228, 121))
+}
+
+a{
+    text-decoration: none;
+    color: white;
+    margin-left: 30px;
+}
+.nav{
+    line-height: 60px ;
+}
+a:hover{
+    color: yellowgreen;
+}
+.noti{
+    background: linear-gradient(to right, rgba(129, 8, 8, 0.767), rgba(107, 22, 22, 0.637));
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+}
+#link{
+    margin-top: 100px;
+}
+.link-title{
+    font-size: 100px;
+    background: linear-gradient(to right, rgba(252, 88, 224, 0.767), rgba(22, 216, 135, 0.637));
+    text-align: center;
+    height: 150px;
+    -webkit-background-clip: text;
+    color:transparent;
+}
+.history a{
+    color: blue;
+    font-weight: 600;
+    margin: 0;
+}
+#gray {
+    color: gray;
+    font-weight: normal;
+}
+span{
+    padding-left: 15px; font-weight: 600; font-size: 20px
+}
+.history{
+    margin-top: 20px;
+    background-color: aquamarine;
+    padding: 10px;
+    border-radius: 10px;
+}
+.selected{
+    width: 250px; height: 50px; margin: 0 auto;
+    line-height: 50px;
+    border: 1px solid rgb(175, 175, 175);
+    font-size: 18px;
+    border-radius: 50px;
+}
+.selected .btn-left{
+    background: linear-gradient(to right, blue , red);
+    color: white;
+    font-weight: bold;
+    border-radius: 50px;
+    margin-top: 3.8px;
+    margin-left: 6px;
+    line-height: 40px;
+    height: 40px;
+}
+.selected .btn-right{
+    color: rgb(194, 194, 194);
+    font-weight: bold;
+    border-radius: 50px;
+    margin-top: 3.8px;
+    margin-right: -6px;
+    line-height: 40px;
+    height: 40px;
+}
+li{
+    margin-top: 10px;
+}
