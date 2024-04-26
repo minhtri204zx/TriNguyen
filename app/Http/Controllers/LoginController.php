@@ -19,15 +19,14 @@ class LoginController extends Controller
     
     public function store(formLogin $request)
     {
+        
         if (Auth::attempt([
             'email' => $request->email,
             'password' => $request->password,
             'verifyEmail' => 'Đã xác thực',
         ])) {
-
             return redirect('/');
         } else {
-
             echo "Sai tài khoản mật khẩu";
         }
     }
@@ -35,9 +34,9 @@ class LoginController extends Controller
     public function index(Request $request)
     {
         if (Auth::check()) {
-            return redirect('/profile');
+            return redirect('/dashboard');
         } else {
-            return view('login');
+            return view('login.login');
         }
     }
 

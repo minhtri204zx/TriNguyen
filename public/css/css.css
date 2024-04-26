@@ -38,3 +38,16 @@ li:hover{
     overflow: hidden; /* Ẩn nội dung vượt quá chiều rộng */
     text-overflow: ellipsis; /* Hiển thị dấu ... cho nội dung ẩn */
 }
+
+#pages{
+    border: 0.5px solid rgb(221, 217, 217);
+    font-weight: 200;
+    margin-left: 1px;
+    text-align: center;
+    line-height: 40px;
+    color: rgb(145, 143, 143);
+    padding: 0 7px;
+    border-radius: 3px;
+
+
+}

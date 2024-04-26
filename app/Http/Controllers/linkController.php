@@ -10,60 +10,65 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Config;
 use App\Http\Requests\LinkRequest;
-
+use App\Models\Viewer;
+use Illuminate\Console\View\Components\Task;
 
 class LinkController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request, $id = '')
-    {
-        if (Auth::check()) {
-            $listLinks = Link::where('account_id', Auth::id())
-                ->orderBy('created_at', 'desc')
-                ->get();
-        } else {
-            $listLinks = Link::where('account_id', null)
-                ->orderBy('created_at', 'desc')
-                ->get();
-        }
-        $url = $request->url();
-        $date = new DateTime();
-        return view('index', compact('listLinks', 'url', 'date', 'id'));
+    public function show(Request $request, int $id){
+        $data = $request->except('page');
+
+            $viewers = Viewer::where($data)
+            ->where('link_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(4);
+      
+        return view('links.detail', compact('viewers','id'));
     }
+    public function index(Request $request)
+    {
+
+            if (isset($request->popular)) {
+                $links = Link::where('account_id', Auth::id())
+                ->orderBy('click', 'desc')
+                ->paginate(4);
+            } else if (isset($request->oldest)) {
+    
+                $links = Link::where('account_id', Auth::id())
+                ->orderBy('created_at', 'asc')
+                ->paginate(4);
+            } else {
+                $links = Link::where('account_id', Auth::id())
+                ->orderBy('created_at', 'desc')
+                ->paginate(4);
+            }
+        return view('links.index', compact('links'));
+    }
+
+
 
     public function store(LinkRequest $request)
     {
-        if (!Auth::check()) {
-            $id = null;
-        } else {
-            $id = Auth::id();
-        }
-        $url = $request->url();
         $Link = $request->input('Link');
         $short = $this->RanDom();
+      
         Link::create([
             'link' => $Link,
             'shorten' => $short,
-            'account_id' => $id,
-            'click' => 0
+            'account_id' =>  Auth::id(),
+            'click' => 0,
         ]);
-        $shorten = $url . '/' . $short;
 
-        return Redirect('/');
+        return back();
     }
 
-    public function edit(Request $request, string $id)
+    public function update(Request $request, int $id)
     {
-        $tri = $request->url();
-        $tri = explode('/', $tri);
-        $Link = Link::where('shorten', $tri[3])->first();
-        Link::where('id', $Link['id'])->update(['click' => $Link['click'] + 1]);
-        return redirect($Link['link']);
+        $link = Link::findOrFail($id);
+
+        $link->update(['shorten' => $request->shorten]);
+
+        return back();
     }
 
     function RanDom($length = 6)
@@ -77,9 +82,13 @@ class LinkController extends Controller
         return $randomString;
     }
 
-    public function deleteLink($id)
+    public function destroy(Request $request, int $id)
     {
-        Link::where('id', $id)->delete();
-        return redirect('manageAccount');
+        $link = Link::findOrFail($id);
+
+        $link->delete();
+        
+        return back();
     }
+
 }

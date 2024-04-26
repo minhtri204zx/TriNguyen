@@ -5,9 +5,13 @@ use App\Http\Controllers\linkController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SignUpController;
 use Illuminate\Support\Facades\Route;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use App\Http\Controllers\ShortenLinkController;
-
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ShortenController;
+use App\Http\Controllers\DashController;
+use App\Http\Controllers\PriceController;
+use Illuminate\Support\Facades\Http;
+use App\Models\link;
+use GuzzleHttp\Psr7\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,61 +24,32 @@ use App\Http\Controllers\ShortenLinkController;
 |
 */
 
+// Route::get('/', [HomeController::class, 'show']);
+Route::get('/', [HomeController::class, 'show']);
+Route::get('links', [LinkController::class, 'index']);
+Route::post('links', [LinkController::class, 'store']);
+Route::patch('links/{id}', [LinkController::class, 'update']);
+Route::delete('links/{id}', [LinkController::class, 'destroy'])
+    ->name('links.destroy');
 
 
-Route::get('/', [\App\Http\Controllers\linkController::class, 'index']); //photos
-Route::post('/store', [\App\Http\Controllers\linkController::class, 'store']);   //store
-Route::get('/{id}/edit', [\App\Http\Controllers\linkController::class, 'edit']);  // /photos/{photo}/edit
-
-Route::get('login',[LoginController::class,'index']);  //	/photos
-Route::post('login',[LoginController::class, 'store']);  // /photos
-Route::get('logout',[LoginController::class,'destroy']);  // destroy
-
-Route::get('signup',[SignUpController::class,'index']);
-Route::post('signup',[SignUpController::class,'store']);
-
-
-
-Route::get('/{code}/verifyEmail',[AccountController::class,'email']);
-
-Route::get('updateAccount',[AccountController::class, 'index']);
-
-Route::patch('updateAccount/{id}/edit',[AccountController::class, 'update']);
-
-Route::patch('/shortenLink/{id}',[ShortenLinkController::class, 'edit']);
-Route::get('/{id}/shorten',[linkController::class, 'index']);
-
-Route::get('manageAccount',[AccountController::class, 'manageAccount']);
-
-Route::get('deleteLink/{id}',[linkController::class, 'deleteLink']);
-
-
-
-
-Route::get('/qr', function () {
-    $data = [
-        "id"=> 21,
-        "name"=> "Ngân hàng TMCP Quân đội",
-        "code"=> "MB",
-        "bin"=> "970422",
-        "shortName"=> "MBBank",
-        "logo"=> "https=>//api.vietqr.io/img/MB.png",
-        "transferSupported"=> 1,
-        "lookupSupported"=> 1,
-        "short_name"=> "MBBank",
-        "support"=> 3,
-        "isTransfer"=> 1
-    ];
-    $jsonPaymentInfo = json_encode($data);
-     $qr= QrCode::size(300)->generate($jsonPaymentInfo);
-     $qr_email = QrCode::email('trinmph36953@fpt.edu.vn', 'testthoi', 'chacogi');
-     $qr_phone= QrCode::phoneNumber('0984484683');
-     return view('qr-code',['qr'=>$qr_phone]);
+Route::middleware(['login'])->group(function () {
+    Route::get('links/{id}', [LinkController::class, 'show'])
+    ->name('link.show');
+    Route::get('logout', [LoginController::class, 'destroy']);
+    Route::patch('updateAccount/{id}', [AccountController::class, 'update']);
+    Route::get('dashboard', [DashController::class, 'show']);
 });
 
 
-Route::get('abc',function (){
-    return view('qrcode');
-});
+Route::get('login', [LoginController::class, 'index']);
+Route::post('login', [LoginController::class, 'store']);
 
+Route::get('signup', [SignUpController::class, 'index']);
+Route::post('signup', [SignUpController::class, 'store']);
+Route::get('verifyEmail/{code}', [SignUpController::class, 'verifyEmail']);  //chưa xác định được là cái j
 
+Route::get('pricing', [PriceController::class, 'show']);
+
+Route::get('/{shorten}', [ShortenController::class, 'show'])
+    ->name('shorten.show');

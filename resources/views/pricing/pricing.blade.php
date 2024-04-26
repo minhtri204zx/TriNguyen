@@ -21,6 +21,10 @@
                         <a href="logout">
                             <p>ĐĂNG XUẤT</p>
                         </a>
+                        <a href="Account">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Microsoft_Account_Logo.svg/1200px-Microsoft_Account_Logo.svg.png"
+                                style="width:50px" alt="">
+                        </a>
                     @else
                         <a href="login">ĐĂNG NHẬP</a>
 
@@ -82,10 +86,9 @@
 
 
             </div>
-            <div class="col-4 pb-3" @if (Auth::user()->vip=='vip')
-                data-bs-toggle="tooltip" data-bs-placement="top"
-                data-bs-custom-class="custom-tooltip" data-bs-title="Đang dùng."
-            @endif
+            <div class="col-4 pb-3"
+                @if (Auth::user()->vip == 'vip') data-bs-toggle="tooltip" data-bs-placement="top"
+                data-bs-custom-class="custom-tooltip" data-bs-title="Đang dùng." @endif
                 style="background-color: #fdfdfd; height: 100%;    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); ">
 
                 <h5 class="text-center mt-3" style="color:#4268aa ">Loại Vip</h5>
@@ -115,31 +118,26 @@
                     <li> Cập nhật link gốc: Không giới hạn.</li>
                     <li> Tên miền con: https://ten-ban.g2.by: 01 (**)</li>
                     <li> Tên miền tùy chỉnh: 01 (**)</li>
+                    </form>
                     @if (Auth::user()->vip != 'vip')
                         <div class="text-center mt-5">
-                    
-                            <form action="updateAccount/{{Auth::id()}}/edit" method="POST">
+
+                            <form action="/updateAccount/{{ Auth::id() }}" method="POST">
                                 @csrf
                                 @method('PATCH')
                                 <input type="hidden" name='vip' value='vip'>
-                                <button type="submit" style="margin-right: 40px" class="btn btn-success"> Đăng
+                                <button type="submit" style="margin-right: 40px" class="btn btn-success">Đăng
                             </form>
-                                ký</button>
+                            ký</button>
                         </div>
                     @endif
-
+                    <form>
                 </ul>
 
-
-
-
-
-
             </div>
-            <div class="col-4 pb-3" @if (Auth::user()->vip=='vip_pro')
-                data-bs-toggle="tooltip" data-bs-placement="top"
-                data-bs-custom-class="custom-tooltip" data-bs-title="Đang dùng."
-            @endif
+            <div class="col-4 pb-3"
+                @if (Auth::user()->vip == 'vip_pro') data-bs-toggle="tooltip" data-bs-placement="top"
+                data-bs-custom-class="custom-tooltip" data-bs-title="Đang dùng." @endif
                 style="background-color: #fdfdfd; height: 100%;   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); ">
 
                 <h5 class="text-center mt-3" style="color:#4268aa ">Loại Vip Pro Max </h5>
@@ -176,16 +174,17 @@
                     <li> Developer API.</li>
                     <li> Chrome Extension cho tên miền tùy chỉnh.</li>
                     <li> Tên miền tùy chỉnh: 01 (**)</li>
+                    </form>
+
                     @if (Auth::user()->vip != 'vip_pro')
                         <div class="text-center mt-5">
-                    
-                            <form action="updateAccount/{{Auth::id()}}/edit" method="POST">
+
+                            <form action="/updateAccount/{{ Auth::id() }}" method="POST">
                                 @csrf
                                 @method('PATCH')
                                 <input type="hidden" name='vip' value='vip_pro'>
                                 <button type="submit" style="margin-right: 40px" class="btn btn-success"> Đăng
-                            </form>
-                                ký</button>
+                                    ký</button>
                         </div>
                     @endif
 

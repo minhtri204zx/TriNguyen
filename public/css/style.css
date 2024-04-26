@@ -35,8 +35,7 @@ a:hover{
     font-weight: 600;
     margin: 0;
 }
-#gray {
-    color: gray;
+.tri {
     font-weight: normal;
 }
 span{
