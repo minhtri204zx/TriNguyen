@@ -2,56 +2,83 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Validator;
 use App\Models\Link;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Config;
 use App\Http\Requests\LinkRequest;
 use App\Models\Viewer;
-use Illuminate\Console\View\Components\Task;
 
 class LinkController extends Controller
 {
-    public function show(Request $request, int $id){
-        $data = $request->except('page');
+    public function show(Request $request, int $id)
+    {
+        $countries = Viewer::distinct('country')
+            ->pluck('country');
 
-            $viewers = Viewer::where($data)
-            ->where('link_id', $id)
+        $devices = Viewer::distinct('device')
+            ->pluck('device');
+
+        $endDate = $request->end;
+        $startDate = $request->created_at;
+
+        $data = $request->except('page', 'created_at', 'end');
+
+        $viewers = Viewer::findOrFail($id);
+
+        $viewers = Link::findOrFail($id)->viewers()
+            ->where($data)
             ->orderBy('created_at', 'desc')
-            ->paginate(4);
-      
-        return view('links.detail', compact('viewers','id'));
+            ->when($request->has('end') && $request->has('created_at'), function ($query) use ($endDate, $startDate) {
+                return $query->where(
+                    [
+                        ['created_at', '>=', $startDate],
+                        ['created_at', '<=', $endDate]
+                    ]
+                );
+            })
+            ->when($request->has('created_at') && !$request->has('end'), function ($query) use ($endDate, $startDate) {
+                return $query->where(
+                    [
+                        ['created_at', '>=', $startDate],
+                    ]
+                );
+            })
+            ->when($request->has('end') && !$request->has('created_at'), function ($query) use ($endDate, $startDate) {
+                return $query->where(
+                    [
+                        ['created_at', '<=', $endDate],
+                    ]
+                );
+            })
+            ->paginate(8);
+
+        return view('links.detail', compact('viewers', 'id', 'countries', 'devices'));
     }
     public function index(Request $request)
     {
-
-            if (isset($request->popular)) {
-                $links = Link::where('account_id', Auth::id())
+        if (isset($request->popular)) {
+            $links = Link::where('account_id', Auth::id())
                 ->orderBy('click', 'desc')
                 ->paginate(4);
-            } else if (isset($request->oldest)) {
-    
-                $links = Link::where('account_id', Auth::id())
+        } else if (isset($request->oldest)) {
+
+            $links = Link::where('account_id', Auth::id())
                 ->orderBy('created_at', 'asc')
                 ->paginate(4);
-            } else {
-                $links = Link::where('account_id', Auth::id())
+        } else {
+            $links = Link::where('account_id', Auth::id())
                 ->orderBy('created_at', 'desc')
                 ->paginate(4);
-            }
-        return view('links.index', compact('links'));
+        }
+
+        return view('links.index', compact('links',));
     }
-
-
 
     public function store(LinkRequest $request)
     {
         $Link = $request->input('Link');
-        $short = $this->RanDom();
-      
+        $short = $this->ranDom();
+
         Link::create([
             'link' => $Link,
             'shorten' => $short,
@@ -71,7 +98,7 @@ class LinkController extends Controller
         return back();
     }
 
-    function RanDom($length = 6)
+    function ranDom($length = 6)
     {
         $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -79,6 +106,7 @@ class LinkController extends Controller
         for ($i = 0; $i < $length; $i++) {
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
+
         return $randomString;
     }
 
@@ -87,8 +115,7 @@ class LinkController extends Controller
         $link = Link::findOrFail($id);
 
         $link->delete();
-        
+
         return back();
     }
-
 }

@@ -1,49 +1,22 @@
-@include('layout.header')
+@extends('layouts.app')
 
-<head>
+@push('linkcss')
     <link rel="stylesheet" href="{{ asset('css/css.css') }}">
-</head>
-<header>
-    <div class="container">
-        <div class="row pt-3">
-            <div class="col-2">
-                <a class="navbar-brand" href="http://127.0.0.1:8000/">
-                    <img src="https://api-muakey.cdn.vccloud.vn/storage/media/oAUQhXzfIhT1iAQ2Udx40GHYF0BArAEj52QXd2XV.jpg?hash=bff4bb67"
-                        alt="Logo" class="d-inline-block align-text-top" width="50px">
-                    <p class="text-light" style="padding-left: 10px ">Muakey.com</p>
-                </a>
-            </div>
-            <div class="col-7"></div>
-            <div class="nav col-3">
-                <a href="pricing">NÂNG CẤP TÀI KHOẢN</a>
-                @auth
-                    <a href="logout">
-                        <p>ĐĂNG XUẤT</p>
-                    </a>
-                @else
-                    <a href="login">ĐĂNG NHẬP</a>
-
-                    <a href="signup">ĐĂNG KÝ</a>
-                @endauth
-
-            </div>
-        </div>
-        </nav>
-
-    </div>
-</header>
-
-@include('layout.navbar')
+@endpush
+@php
+$show=true
+@endphp
+@section('content')
 
 <div class="col-9 mt-4">
 
     <h1 class="text-center mt-5">Lịch sử rút</h1>
-    <select id="list" onchange="change()">
+    <select id="list" onchange="change()" class="form-select" style="width: 200px">
         <option @isset($_GET['sort'])
             @else selected
         @endisset value="/links">Mới nhất
         </option>
-        <option @isset($_GET['oldest'])
+        <option  @isset($_GET['oldest'])
          selected
     @endisset value="/links?oldest=true">Cũ nhất
         </option>
@@ -61,7 +34,6 @@
             <th>Số lần click</th>
             <th>Thời gian đã tạo</th>
             <th>Thao tác</th>
-
         </thead>
         <tbody>
             @foreach ($links as $link)
@@ -72,7 +44,9 @@
                     <td>
                         <span style="margin-left: 25px" class="badge text-bg-success">alive</span>
                     </td>
+                    
                     <td><span style="margin-left: 35px" class="badge text-bg-primary">{{ $link->click }}</span></td>
+
                     <td>{{ $link->created_at->diff(now())->format('%H giờ %I phút %s giây') }}
                     <td>
 
@@ -112,3 +86,5 @@
         }
     }
 </script>
+
+@endsection

@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Viewer extends Model
 {
     use HasFactory;
-    protected $fillable = ['id', 'link_id', 'device', 'media', 'platform', 'country','ip','city','lat','lon'];
+    protected $fillable = ['id', 'link_id', 'device', 'media', 'platform', 'country', 'ip', 'city', 'lat', 'lon'];
 }
