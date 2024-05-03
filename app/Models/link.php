@@ -30,9 +30,16 @@ class link extends Model
         return $this->viewers()->count();
     }
 
+    public function getAbcAttribute() 
+    {
+        return  1123123123;
+    }
+
     public function viewers(): HasMany 
     {
         return $this->hasMany(Viewer::class);
     }
+
+    
 
 }

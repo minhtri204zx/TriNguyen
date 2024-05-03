@@ -12,18 +12,18 @@ class LinkController extends Controller
 {
     public function show(Request $request, int $id)
     {
-        $countries = Viewer::distinct('country')
+        $countries = Link::findOrFail($id)->viewers()
+            ->distinct('country')
             ->pluck('country');
 
-        $devices = Viewer::distinct('device')
+        $devices = Link::findOrFail($id)->viewers()
+            ->distinct('device')
             ->pluck('device');
 
         $endDate = $request->end;
         $startDate = $request->created_at;
 
         $data = $request->except('page', 'created_at', 'end');
-
-        $viewers = Viewer::findOrFail($id);
 
         $viewers = Link::findOrFail($id)->viewers()
             ->where($data)
@@ -36,18 +36,18 @@ class LinkController extends Controller
                     ]
                 );
             })
-            ->when($request->has('created_at') && !$request->has('end'), function ($query) use ($endDate, $startDate) {
+            ->when($request->has('created_at') && !$request->has('end'), function ($query) use ($startDate) {
                 return $query->where(
-                    [
-                        ['created_at', '>=', $startDate],
-                    ]
+                    'created_at',
+                    '>=',
+                    $startDate
                 );
             })
-            ->when($request->has('end') && !$request->has('created_at'), function ($query) use ($endDate, $startDate) {
+            ->when($request->has('end') && !$request->has('created_at'), function ($query) use ($endDate) {
                 return $query->where(
-                    [
-                        ['created_at', '<=', $endDate],
-                    ]
+                    'created_at',
+                    '<=',
+                    $endDate
                 );
             })
             ->paginate(8);
@@ -56,12 +56,7 @@ class LinkController extends Controller
     }
     public function index(Request $request)
     {
-        if (isset($request->popular)) {
-            $links = Link::where('account_id', Auth::id())
-                ->orderBy('click', 'desc')
-                ->paginate(4);
-        } else if (isset($request->oldest)) {
-
+        if (isset($request->oldest)) {
             $links = Link::where('account_id', Auth::id())
                 ->orderBy('created_at', 'asc')
                 ->paginate(4);

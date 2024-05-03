@@ -16,14 +16,14 @@ $show=true
         <div class="col-3">
             <h5>Quốc gia</h5>
             <select class="form-select" id="list" onchange="change()">
-                <option value="">Chưa chọn</option>
+                <option value="">Chưa chọn </option>
 
                 @foreach ($countries as $country)
                     <option @if (request()->input('country') == $country) {{ 'selected' }} @endif
                         value="{{ request()->fullUrlWithQuery([
                             'country' => $country,
                         ]) }}">
-                        {{ $country }}</option>
+                        {{ $country }} </option>
                 @endforeach
 
             </select>
@@ -58,33 +58,36 @@ $show=true
             </form>
         </div>
     </div>
-    <table class="table table-striped">
-        <thead>
-          
-            <th>STT</th>
-            <th>Thời gian click</th>
-            <th>Thiết bị</th>
-            <th>Phương tiện</th>
-            <th>Hệ điều hành</th>
-            <th>Quốc gia</th>
-            <th>Thành phố</th>
-            <th>Địa chỉ IP</th>
-        </thead>
-        <tbody>
-            @foreach ($viewers as $viewer)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $viewer->created_at }}</td>
-                    <td>{{ $viewer->device }}</td>
-                    <td>{{ $viewer->media }}</td>
-                    <td>{{ $viewer->platform }}</td>
-                    <td>{{ $viewer->country }}</td>
-                    <td>{{ $viewer->city }}</td>
-                    <td>{{ $viewer->ip }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div  style="height: 400px">
+        <table class="table table-striped">
+            <thead>
+              
+                <th>STT</th>
+                <th>Thời gian click</th>
+                <th>Thiết bị</th>
+                <th>Phương tiện</th>
+                <th>Hệ điều hành</th>
+                <th>Quốc gia</th>
+                <th>Thành phố</th>
+                <th>Địa chỉ IP</th>
+            </thead>
+            <tbody>
+                @foreach ($viewers as $viewer)
+                    <tr>
+                        <td>{{ $loop->iteration }} </td>
+                        <td>{{ $viewer->created_at }}</td>
+                        <td>{{ $viewer->device }}</td>
+                        <td>{{ $viewer->media }}</td>
+                        <td>{{ $viewer->platform }}</td>
+                        <td>{{ $viewer->country }}</td>
+                        <td>{{ $viewer->city }}</td>
+                        <td>{{ $viewer->ip }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+   
     <?php
     $pages = ceil($viewers->total() / 8);
     ?>

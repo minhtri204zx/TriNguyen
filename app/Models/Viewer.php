@@ -9,4 +9,7 @@ class Viewer extends Model
 {
     use HasFactory;
     protected $fillable = ['id', 'link_id', 'device', 'media', 'platform', 'country', 'ip', 'city', 'lat', 'lon'];
+
+    
+
 }

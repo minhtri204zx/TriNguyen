@@ -20,10 +20,6 @@ $show=true
          selected
     @endisset value="/links?oldest=true">Cũ nhất
         </option>
-        <option @isset($_GET['popular'])
-        selected
-   @endisset value="/links?popular=true">Phổ biến
-            nhất</option>
     </select>
     <table class="table">
         <thead>
@@ -40,7 +36,12 @@ $show=true
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td><a class='linkgoc' href="{{ $link->link }}">{{ $link->link }}</a></td>
-                    <td><a class='linkgoc' href="{{ $link->url }}">{{ $link->url }}</a></td>
+                    <td>
+                        <div id="form{{ $link->id }}">
+                            <a class='linkgoc' id="gray{{ $link->id }}"
+                                href="{{ $link->url }}">{{ $link->url }}</a>
+                        </div>
+                    </td>
                     <td>
                         <span style="margin-left: 25px" class="badge text-bg-success">alive</span>
                     </td>
@@ -54,6 +55,8 @@ $show=true
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger" style="margin-left: 7px ">Xoá</button>
+                            <button type="button" class="btn btn-warning"
+                            onclick="convernInput({{  $link->id }})" style="margin-left: 7px ">Sửa</button>
                             <a href="links/{{ $link->id }}" class="btn btn-info">Xem chi tiết</a>
                         </form>
                     </td>
@@ -85,6 +88,25 @@ $show=true
             window.location.href = selectedValue;
         }
     }
+
+    function convernInput(id) {
+            let link = document.getElementById('gray' + id);
+            let form = document.getElementById('form' + id);
+            let arr = link.innerText.split('/');
+            link.parentNode.removeChild(link);
+            form.innerHTML = ` <form name="myForm" action="/links/${id}" method="post">
+                            @csrf
+                            @method('PATCH')
+                            <input type="text" name="shorten" style="color: gray; font-weight: normal" value="${arr[3]}" required>
+                    </form>  
+                `
+        }
+
+        document.getElementById("myForm").addEventListener("enter", function(event) {
+            if (event.key === "Enter") {
+                document.forms[0].submit();
+            }
+        });
 </script>
 
 @endsection
