@@ -13,12 +13,14 @@ class LinkController extends Controller
     public function show(Request $request, int $id)
     {
         $countries = Link::findOrFail($id)->viewers()
+            ->select('country', 'link_id')
             ->distinct('country')
-            ->pluck('country');
+            ->get();
 
         $devices = Link::findOrFail($id)->viewers()
+            ->select('device', 'link_id')
             ->distinct('device')
-            ->pluck('device');
+            ->get();
 
         $endDate = $request->end;
         $startDate = $request->created_at;

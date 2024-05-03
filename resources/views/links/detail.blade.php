@@ -19,11 +19,11 @@ $show=true
                 <option value="">Chưa chọn </option>
 
                 @foreach ($countries as $country)
-                    <option @if (request()->input('country') == $country) {{ 'selected' }} @endif
+                    <option class="position-relative" @if (request()->input('country') == $country['country']) {{ 'selected' }} @endif
                         value="{{ request()->fullUrlWithQuery([
-                            'country' => $country,
+                            'country' => $country['country'],
                         ]) }}">
-                        {{ $country }} </option>
+                        {{ $country['country'] }} ({{$country->abc}})  </option>
                 @endforeach
 
             </select>
@@ -34,11 +34,11 @@ $show=true
                 <option value="">Chưa chọn</option>
               
                 @foreach ($devices as $device)
-                <option @if (request()->input('device') == $device) {{ 'selected' }} @endif
+                <option @if (request()->input('device') == $device['device']) {{ 'selected' }} @endif
                     value="{{ request()->fullUrlWithQuery([
-                        'device' => $device,
+                        'device' => $device['device'],
                     ]) }}">
-                    {{ $device }}</option>
+                    {{ $device['device'] }}</option>
             @endforeach
 
             </select>
@@ -61,7 +61,6 @@ $show=true
     <div  style="height: 400px">
         <table class="table table-striped">
             <thead>
-              
                 <th>STT</th>
                 <th>Thời gian click</th>
                 <th>Thiết bị</th>
