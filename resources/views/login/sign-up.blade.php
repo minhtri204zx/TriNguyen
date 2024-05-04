@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
-<body style="background-color: #1A376B">
+<body style="background: linear-gradient(#141e30, #243b55);">
     
 <div style="background-color:#fff;color: #1A376B; width: 400px; margin: 0 auto; border-radius: 20px; margin-top: 50px">
 

@@ -86,7 +86,6 @@ $show=true
             </tbody>
         </table>
     </div>
-   
     <?php
     $pages = ceil($viewers->total() / 8);
     ?>

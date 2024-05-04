@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('links', function (Blueprint $table) {
-            $table->string('password')->nullable();
+            $table->string('pass')->nullable();
         });
     }
 

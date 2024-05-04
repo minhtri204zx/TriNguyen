@@ -51,10 +51,9 @@ $show=true
                     <td>{{ $link->created_at->diff(now())->format('%H giờ %I phút %s giây') }}
                     <td>
 
-                        <form action="{{ route('links.destroy', $link) }}" method="post">
+                        <form action="/links/{{$link->id}}/pass">
                             @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger" style="margin-left: 7px ">Xoá</button>
+                            <button class="btn btn-danger" style="margin-left: 7px ">Đặt mật khẩu</button>
                             <button type="button" class="btn btn-warning"
                             onclick="convernInput({{  $link->id }})" style="margin-left: 7px ">Sửa</button>
                             <a href="links/{{ $link->id }}" class="btn btn-info">Xem chi tiết</a>

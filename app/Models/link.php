@@ -19,10 +19,9 @@ class link extends Model
 
     public function getStatusAttribute()
     {
-        // $response = Http::head($this->link);
+        $response = Http::head($this->link);
 
-        // return !$response->failed() ? ['success','alive'] :['danger','die'];
-        return ['success','alive'];
+        return !$response->failed() ? ['success','alive'] :['danger','die'];
     }
 
     public function getClickAttribute() 

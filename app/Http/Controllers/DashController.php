@@ -26,7 +26,7 @@ class DashController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         }
-
+        
         return view('dashboard.dashboard', ['links' => $links]);
     }
 }
