@@ -24,6 +24,8 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 Route::get('qr-code', function () {
     return QrCode::size(500)->generate('https://www.youtube.com/watch?v=xlcL1DIJWig&list=PLVgvqpNksRtaV_2Wtf4SzMkJ1e22uM5Xz&index=8');
 });
+
+Route::middleware(['share.noti'])->group(function () {
 // Route::get('/', [HomeController::class, 'show']);
 Route::get('/', [HomeController::class, 'show']);
 Route::get('links', [LinkController::class, 'index']);
@@ -53,5 +55,6 @@ Route::get('/{shorten}', [ShortenController::class, 'show'])
     ->name('shorten.show');
 Route::post('/{shorten}', [ShortenController::class, 'checkPass'])
     ->name('shorten.checkPass');
+});
 
 

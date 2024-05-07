@@ -13,17 +13,17 @@ class DashController extends Controller
         if (isset($request->popular)) {
             $links = link::where('account_id', Auth::id())
                 ->orderBy('click', 'desc')
-                ->get();
+                  ->paginate(6);
         } else if (isset($request->oldest)) {
 
             $links = link::where('account_id', Auth::id())
                 ->orderBy('created_at', 'asc')
-                ->get();
+                  ->paginate(6);
         } else {
 
             $links = link::where('account_id', Auth::id())
                 ->orderBy('created_at', 'desc')
-                ->get();
+                  ->paginate(6);
         }
         
         return view('dashboard.dashboard', ['links' => $links]);

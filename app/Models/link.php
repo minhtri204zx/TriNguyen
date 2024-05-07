@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 class link extends Model
 {
     use HasFactory;
-    protected $fillable = ['id', 'link', 'shorten', 'account_id', 'infor',];
+    protected $fillable = ['id', 'link', 'shorten', 'account_id'];
 
     public function getUrlAttribute()
     {

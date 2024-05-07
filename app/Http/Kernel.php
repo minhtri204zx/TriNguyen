@@ -5,13 +5,14 @@ namespace App\Http;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\UpdateStatus;
+use App\Http\Middleware\ShareNoti;
 
 class Kernel extends HttpKernel
 {
 
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(UpdateStatus::class)->everyFiveMinutes();
+        $schedule->command('command:status_links')->everyMinute();
     }
     /**
      * The application's global HTTP middleware stack.
@@ -59,6 +60,7 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
+        'share.noti'=> ShareNoti::class,
         'login' =>  \App\Http\Middleware\CheckLogin::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

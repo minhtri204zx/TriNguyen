@@ -47,55 +47,74 @@
         @endisset
                 value="/dashboard?oldest=true">Cũ nhất</option>
         </select>
-        <table class="table">
-            <thead>
-                <th>STT</th>
-                <th>Link gốc</th>
-                <th>Link sau khi rút</th>
-                <th>Trạng thái</th>
-                <th>Số lần click</th>
-                <th>Thời gian đã tạo</th>
-                <th>Thao tác</th>
-            </thead>
-            <tbody>
-                @foreach ($links as $link)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td><a class='linkgoc' href="{{ $link->link }}">{{ $link->link }}</a></td>
-                        <td>
-                            <div id="form{{ $link->id }}">
-                                <a class='linkgoc' id="gray{{ $link->id }}"
-                                    href="{{ $link->url }}">{{ $link->url }}</a>
-                            </div>
-                        </td>
-                        <td>
-                            <span style="margin-left: 20px"
-                                class="badge text-bg-<?php if ($link->status == 'alive') {
-                                    echo 'success';
-                                } elseif ($link->status == 'die') {
-                                    echo 'danger';
-                                } else {
-                                    echo 'warning text-light';
-                                } ?> ?>">{{ $link->status }}</span>
-                        </td>
-                        <td><span style="margin-left: 35px" class="badge text-bg-primary">{{ $link->click }}</span></td>
-                        <td>@php
-                            $time = new DateTime($link->created_at);
-                            echo $link->created_at->diff(now())->format('%H giờ %I phút %s giây');
-                        @endphp</td>
-                        <td>
-                            <form action="links/{{ $link->id }}/pass">
-                                @csrf
-                                <button class="btn btn-danger" style="margin-left: 7px ">Đặt mật khẩu</button>
-                                <button type="button" class="btn btn-warning" onclick="convernInput({{ $link->id }})"
-                                    style="margin-left: 7px ">Sửa</button>
-                                <a href="links/{{ $link->id }}" class="btn btn-info">Xem chi tiết</a>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div style="height: 400px">
+            <table class="table">
+                <thead>
+                    <th>STT</th>
+                    <th>Link gốc</th>
+                    <th>Link sau khi rút</th>
+                    <th>Trạng thái</th>
+                    <th>Số lần click</th>
+                    <th>Thời gian đã tạo</th>
+                    <th>Thao tác</th>
+                </thead>
+                <tbody>
+                    @foreach ($links as $link)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td><a class='linkgoc' href="{{ $link->link }}">{{ $link->link }}</a></td>
+                            <td>
+                                <div id="form{{ $link->id }}">
+                                    <a class='linkgoc' id="gray{{ $link->id }}"
+                                        href="{{ $link->url }}">{{ $link->url }}</a>
+                                </div>
+                            </td>
+                            <td>
+                                <span style="margin-left: 20px"
+                                    class="badge text-bg-<?php if ($link->status == 'alive') {
+                                        echo 'success';
+                                    } elseif ($link->status == 'die') {
+                                        echo 'danger';
+                                    } else {
+                                        echo 'warning text-light';
+                                    } ?> ?>">{{ $link->status }}</span>
+                            </td>
+                            
+                            <td><span style="margin-left: 35px" class="badge text-bg-primary">{{ $link->click }}</span></td>
+        
+                            <td>{{ $link->created_at->diff(now())->format('%H giờ %I phút %s giây') }}
+                            <td>
+        
+                                <form action="/links/{{$link->id}}/pass">
+                                    @csrf
+                                    <button class="btn btn-danger" style="margin-left: 7px ">Đặt mật khẩu</button>
+                                    <button type="button" class="btn btn-warning"
+                                    onclick="convernInput({{  $link->id }})" style="margin-left: 7px ">Sửa</button>
+                                    <a href="links/{{ $link->id }}" class="btn btn-info">Xem chi tiết</a>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+      
+        <div>
+            <?php
+            $pages = ceil($links->total() / 4);
+            ?>
+            @for ($i = 1; $i <= $pages; $i++)
+                <a id="pages" style="<?php
+                if (!isset($_GET['page'])) {
+                    $_GET['page'] = 1;
+                }
+                if ($_GET['page'] == $i) {
+                    echo 'background-color: rgba(6, 16, 109, 0.753);color: white;font-weight: 700;';
+                } ?>"
+                    href="/dashboard?page={{ $i }}">{{ $i }}</a>
+            @endfor
+    
+        </div>
     </div>
     </div>
     <script>

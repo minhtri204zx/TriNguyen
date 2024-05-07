@@ -41,6 +41,23 @@
                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Microsoft_Account_Logo.svg/1200px-Microsoft_Account_Logo.svg.png"
                                 style="width:50px" alt="">
                         </a>
+
+
+                        <span class="navbar-dark">
+                            <button class="navbar-toggler" type="button" id="myButton">
+                                <i class="fa-solid fa-bell"></i>
+                                <span id="number">
+                                    @foreach ($notis as $noti)
+                                    <div> {{$noti->count}}</div>
+                                    @break
+                                   @endforeach</span>
+                            </button>
+                        </span>
+                        <div id="thongbao">
+                          @foreach ($notis as $noti)
+                           <div>{{$noti->content}}</div>
+                          @endforeach
+                        </div>
                     @else
                         <a href="login">ĐĂNG NHẬP</a>
 
@@ -78,6 +95,17 @@
     <footer>
 
     </footer>
+    <script>
+        document.getElementById("myButton").addEventListener("click", function() {
+            let thongbao = document.getElementById("thongbao");
+            if (thongbao.style.display == "block") {
+                thongbao.style.display = "none";
+            }else{
+                thongbao.style.display = "block";
+            }
+
+        });
+    </script>
 </body>
 
 </html>

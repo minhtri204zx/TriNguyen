@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\link;
+use App\Models\Noti;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 
@@ -33,10 +34,16 @@ class StatusCommand extends Command
         $links = Link::get();
         foreach ($links as $link) {
             try {
-                $response = Http::head($link->link);
+                $response = Http::timeout(2)->head($link->link);
                 $status = $response->failed() ? 'die' : 'alive';
             } catch (ConnectionException $e) {
                 $status = 'die';
+            }
+            if ($link->status != $status) {
+               Noti::create([
+                'content'=>"Link $link->shorten của bạn đã $link->status",
+                'account_id'=>$link->account_id
+               ]);
             }
             Link::where('id', $link->id)->update(['status' => $status]);
         }
