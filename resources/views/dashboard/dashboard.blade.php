@@ -68,25 +68,27 @@
                                     href="{{ $link->url }}">{{ $link->url }}</a>
                             </div>
                         </td>
-                        <td>@foreach ($arrStatus as $status)
-                            @if ($status['id']==$link->id)
+                        <td>
                             <span style="margin-left: 20px"
-                            class="badge text-bg-{{ $status['badge'] }} ">{{ $status['status'] }} </span>
-                            @break
-                            @endif
-                            
-                        @endforeach</td>
+                                class="badge text-bg-<?php if ($link->status == 'alive') {
+                                    echo 'success';
+                                } elseif ($link->status == 'die') {
+                                    echo 'danger';
+                                } else {
+                                    echo 'warning text-light';
+                                } ?> ?>">{{ $link->status }}</span>
+                        </td>
                         <td><span style="margin-left: 35px" class="badge text-bg-primary">{{ $link->click }}</span></td>
                         <td>@php
                             $time = new DateTime($link->created_at);
                             echo $link->created_at->diff(now())->format('%H giờ %I phút %s giây');
                         @endphp</td>
                         <td>
-                            <form action="links/{{$link->id}}/pass">
+                            <form action="links/{{ $link->id }}/pass">
                                 @csrf
                                 <button class="btn btn-danger" style="margin-left: 7px ">Đặt mật khẩu</button>
-                                <button type="button" class="btn btn-warning"
-                                    onclick="convernInput({{  $link->id }})" style="margin-left: 7px ">Sửa</button>
+                                <button type="button" class="btn btn-warning" onclick="convernInput({{ $link->id }})"
+                                    style="margin-left: 7px ">Sửa</button>
                                 <a href="links/{{ $link->id }}" class="btn btn-info">Xem chi tiết</a>
                             </form>
                         </td>

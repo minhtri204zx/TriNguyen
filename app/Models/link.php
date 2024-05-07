@@ -16,14 +16,6 @@ class link extends Model
     {
         return 'http://127.0.0.1:8000/' . $this->shorten;
     }
-
-    public function getStatusAttribute()
-    {
-        $response = Http::head($this->link);
-
-        return !$response->failed() ? ['success','alive'] :['danger','die'];
-    }
-
     public function getClickAttribute() 
     {
         return $this->viewers()->count();

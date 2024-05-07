@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ShortenController;
 use App\Http\Controllers\DashController;
 use App\Http\Controllers\PriceController;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +21,9 @@ use App\Http\Controllers\PriceController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('qr-code', function () {
+    return QrCode::size(500)->generate('https://www.youtube.com/watch?v=xlcL1DIJWig&list=PLVgvqpNksRtaV_2Wtf4SzMkJ1e22uM5Xz&index=8');
+});
 // Route::get('/', [HomeController::class, 'show']);
 Route::get('/', [HomeController::class, 'show']);
 Route::get('links', [LinkController::class, 'index']);
@@ -50,3 +53,5 @@ Route::get('/{shorten}', [ShortenController::class, 'show'])
     ->name('shorten.show');
 Route::post('/{shorten}', [ShortenController::class, 'checkPass'])
     ->name('shorten.checkPass');
+
+

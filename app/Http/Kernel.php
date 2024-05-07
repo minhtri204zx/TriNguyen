@@ -2,11 +2,17 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\CheckLogin;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\UpdateStatus;
 
 class Kernel extends HttpKernel
 {
+
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command(UpdateStatus::class)->everyFiveMinutes();
+    }
     /**
      * The application's global HTTP middleware stack.
      *
@@ -45,7 +51,6 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
-
     /**
      * The application's route middleware.
      *
@@ -54,7 +59,7 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
-        'login'=>  \App\Http\Middleware\CheckLogin::class  ,
+        'login' =>  \App\Http\Middleware\CheckLogin::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,

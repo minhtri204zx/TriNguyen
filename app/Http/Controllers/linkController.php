@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\LinkRequest;
 use App\Http\Requests\PassRequest;
+use App\Jobs\CheckLink;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 
 class LinkController extends Controller
@@ -32,13 +34,13 @@ class LinkController extends Controller
             ->where($data)
             ->orderBy('created_at', 'desc')
             ->when($request->has('end') && $request->has('created_at'), function ($query) use ($endDate, $startDate) {
-                return $query->whereBetween('created_at',[$startDate,$endDate]);
+                return $query->whereBetween('created_at', [$startDate, $endDate]);
             })
             ->when($request->has('created_at') && !$request->has('end'), function ($query) use ($startDate) {
-                return $query->where('created_at','>=',$startDate);
+                return $query->where('created_at', '>=', $startDate);
             })
             ->when($request->has('end') && !$request->has('created_at'), function ($query) use ($endDate) {
-                return $query->where('created_at','<=',$endDate);
+                return $query->where('created_at', '<=', $endDate);
             })
             ->paginate(8);
 
@@ -61,18 +63,15 @@ class LinkController extends Controller
 
     public function store(LinkRequest $request)
     {
-        $Link = $request->input('Link');
+        $link = $request->input('Link');
         $short = $this->ranDom();
-        $link= Link::create([
-            'link' => $Link,
+        $link = Link::create([
+            'link' => $link,
             'shorten' => $short,
             'account_id' =>  Auth::id(),
-            'click' => 0,
+            'status'=> 'Đang xử lí'
         ]);
-       $response = Http::head($link->link);
-        if (isset($_SESSION['status'])) {
-            $_SESSION['status'][] = ['id'=> $link->id, 'badge'=>$response->failed()?'danger':'success', 'status'=>$response->failed()?'die':'alive', 'time'=>now() ];
-        }
+        CheckLink::dispatch($link->link,$link->id);
         return back();
     }
 
@@ -97,15 +96,16 @@ class LinkController extends Controller
         return $randomString;
     }
 
-    public function editPass(int $id){
+    public function editPass(int $id)
+    {
         $link = Link::where('id', $id)->firstOrFail();
-        return view('links.edit-pass', ['link'=>$link]);
+        return view('links.edit-pass', ['link' => $link]);
     }
 
-    public function updatePass(PassRequest $request, int $id){
+    public function updatePass(PassRequest $request, int $id)
+    {
         Link::findOrFail($id);
-        Link::where('id', $id)->update(['pass'=> $request->pass]);
+        Link::where('id', $id)->update(['pass' => $request->pass]);
         echo 'Thay đổi mật khẩu thành công';
     }
-
 }

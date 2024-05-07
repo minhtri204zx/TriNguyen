@@ -11,6 +11,7 @@ class HomeController extends Controller
 {
     public function show(Request $request, $id = '')
     {
+
         if (Auth::check()) {
             $links = Link::where('account_id', Auth::id())
                 ->orderBy('created_at', 'desc')
