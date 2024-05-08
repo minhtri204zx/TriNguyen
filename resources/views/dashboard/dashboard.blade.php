@@ -101,7 +101,7 @@
       
         <div>
             <?php
-            $pages = ceil($links->total() / 4);
+            $pages = ceil($links->total() / 6);
             ?>
             @for ($i = 1; $i <= $pages; $i++)
                 <a id="pages" style="<?php

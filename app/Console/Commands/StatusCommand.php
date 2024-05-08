@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\Tri;
 use Illuminate\Console\Command;
 use App\Models\link;
 use App\Models\Noti;
@@ -40,10 +41,7 @@ class StatusCommand extends Command
                 $status = 'die';
             }
             if ($link->status != $status) {
-               Noti::create([
-                'content'=>"Link $link->shorten của bạn đã $link->status",
-                'account_id'=>$link->account_id
-               ]);
+             event(new Tri($link));
             }
             Link::where('id', $link->id)->update(['status' => $status]);
         }
