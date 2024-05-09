@@ -7,8 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Hello {{$name}} Vui lòng nhấn vào  <a href="http://localhost:8000/verifyEmail/{{$code}}">đây</a> để xác thực tài khoản của bạn: 
-       
+    <h1>Hello whatsup bro!!
+        Chúng tôi là từ bên rút link laravel
+        Xin thông báo là : link {{$link}} đã {{$status=='alive'?'hồi sinh':'niệm'}} 
     </h1>
 </body>
 </html>

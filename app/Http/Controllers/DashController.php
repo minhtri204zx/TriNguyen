@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\StatusChange;
 use Illuminate\Http\Request;
 use App\Models\link;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class DashController extends Controller
 {
     public function show(Request $request)
     {
+
+
         if (isset($request->popular)) {
             $links = link::where('account_id', Auth::id())
                 ->orderBy('click', 'desc')

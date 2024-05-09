@@ -47,15 +47,13 @@
                             <button class="navbar-toggler" type="button" id="myButton">
                                 <i class="fa-solid fa-bell"></i>
                                 <span id="number">
-                                    @foreach ($notis as $noti)
-                                    <div> {{$noti->count}}</div>
-                                    @break
-                                   @endforeach</span>
+                                    <div> {{$counts}}</div>
+                                 </span>
                             </button>
                         </span>
                         <div id="thongbao">
                           @foreach ($notis as $noti)
-                           <div>{{$noti->content}}</div>
+                           <div>{{$noti->data['content']}}</div>
                           @endforeach
                         </div>
                     @else

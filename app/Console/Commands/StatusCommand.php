@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Events\Tri;
+use App\Events\ChangeStatusLink;
 use Illuminate\Console\Command;
 use App\Models\link;
-use App\Models\Noti;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 
@@ -41,7 +40,7 @@ class StatusCommand extends Command
                 $status = 'die';
             }
             if ($link->status != $status) {
-             event(new Tri($link));
+             event(new ChangeStatusLink($link));
             }
             Link::where('id', $link->id)->update(['status' => $status]);
         }

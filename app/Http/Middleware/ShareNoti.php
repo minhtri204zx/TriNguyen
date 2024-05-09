@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Noti;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
@@ -20,8 +21,12 @@ class ShareNoti
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check()) {
-            $notis = Noti::where('account_id', Auth::id())->get();
+            $user = Auth::user();
+            $notis = $user->unreadNotifications;
+            $counts = $notis->count();
+            // $notis= json_decode($notis);
             View::share('notis', $notis);
+            View::share('counts', $counts);
         }
         return $next($request);
 

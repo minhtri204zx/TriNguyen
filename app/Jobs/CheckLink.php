@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\Tri;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -49,10 +50,13 @@ class CheckLink implements ShouldQueue
        try {
         $response = Http::head($this->link);
         $status = $response->failed() ? 'die' : 'alive';
-        Link::where('id', $this->id)->update(['status' => $status]);
        } catch (ConnectionException $e) {
         $status ='die';
-        Link::where('id', $this->id)->update(['status' => $status]);
        }
+       if ($this->link->status != $status) {
+        event(new Tri($this->link));
+       }
+       Link::where('id', $this->id)->update(['status' => $status]);
+
     }
 }

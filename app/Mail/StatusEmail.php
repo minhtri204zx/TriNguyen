@@ -12,8 +12,8 @@ use Illuminate\Queue\SerializesModels;
 class TestLaravelMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $name;
-    public $code;
+    public $link;
+    public $status;
 
 
     /**
@@ -21,10 +21,10 @@ class TestLaravelMail extends Mailable
      *
      * @return void
      */
-    public function __construct(string $name,$code)
+    public function __construct(string $link,$status)
     {
-        $this->name = $name;
-        $this->code = $code;
+        $this->link = $link;
+        $this->status = $status;
     }
 
     /**
@@ -35,7 +35,7 @@ class TestLaravelMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Xác thực Email',
+            subject: 'Thông báo về sự thay đổi của link',
         );
     }
 
@@ -47,9 +47,9 @@ class TestLaravelMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mail.test-mail',
-            with: ['name'=> $this->name,
-            'code'=> $this->code]
+            view: 'mail.status-mail',
+            with: ['link'=> $this->link,
+            'status'=> $this->status]
         );
     }
 
